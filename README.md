@@ -151,7 +151,9 @@ FROM transactions t
 GROUP BY TO_CHAR(t.transaction_date, 'YYYY-MM')
 ORDER BY month;
 ```
-📸 Screenshot: ![Moving Average](screenshots/Query5.png)  
+📸 Screenshot:
+
+![Moving Average](screenshots/Query5.png)  
 **Interpretation:** Smooths data for long-term trend analysis.  
 
 ---
