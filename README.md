@@ -45,7 +45,7 @@ The solution must achieve the following goals using PL/SQL window functions:
 - **transactions**: transaction_id (PK), account_id (FK), transaction_date, amount  
 
 ### ER Diagram  
-📌 ![ER Diagram](screenshots/ERD_PL_SQL.png)  
+📌 ![ER Diagram](screenshots/ER_Diagram.png)  
 
 ---
 
@@ -55,45 +55,81 @@ Each query includes: SQL code → screenshot of results → interpretation.
 
 ### 1. Ranking (Top Customers by Deposits)  
 ```sql
--- SQL here
+SELECT c.customer_id, c.name, 
+       SUM(t.amount) AS total_deposits,
+       RANK() OVER (ORDER BY SUM(t.amount) DESC) AS deposit_rank
+FROM customers c
+JOIN accounts a ON c.customer_id = a.customer_id
+JOIN transactions t ON a.account_id = t.account_id
+WHERE a.account_type = 'Savings'
+GROUP BY c.customer_id, c.name;
 ```
-📸 Screenshot: ![Ranking Results](screenshots/ranking_results.png)  
+📸 Screenshot: ![Ranking Results](screenshots/Query1.png)  
 **Interpretation:** Identifies top deposit customers ranked by total deposits.  
 
 ---
 
 ### 2. Running Monthly Totals  
 ```sql
--- SQL here
+SELECT TO_CHAR(t.transaction_date, 'YYYY-MM') AS month,
+       SUM(t.amount) AS monthly_total,
+       SUM(SUM(t.amount)) OVER (ORDER BY TO_CHAR(t.transaction_date, 'YYYY-MM')) AS running_total
+FROM transactions t
+GROUP BY TO_CHAR(t.transaction_date, 'YYYY-MM')
+ORDER BY month;
 ```
-📸 Screenshot: ![Running Totals](screenshots/running_totals.png)  
+📸 Screenshot: ![Running Totals](screenshots/Query2.png)  
 **Interpretation:** Shows monthly totals with cumulative running balance.  
 
 ---
 
 ### 3. Month-over-Month Growth  
 ```sql
--- SQL here
+SELECT TO_CHAR(t.transaction_date, 'YYYY-MM') AS month,
+       SUM(t.amount) AS monthly_total,
+       LAG(SUM(t.amount)) OVER (ORDER BY TO_CHAR(t.transaction_date, 'YYYY-MM')) AS prev_month_total,
+       ROUND(
+         ((SUM(t.amount) - LAG(SUM(t.amount)) OVER (ORDER BY TO_CHAR(t.transaction_date, 'YYYY-MM')))
+          / LAG(SUM(t.amount)) OVER (ORDER BY TO_CHAR(t.transaction_date, 'YYYY-MM'))) * 100, 2
+       ) AS growth_percent
+FROM transactions t
+GROUP BY TO_CHAR(t.transaction_date, 'YYYY-MM')
+ORDER BY month;
 ```
-📸 Screenshot: ![Growth Results](screenshots/growth_results.png)  
+📸 Screenshot: ![Growth Results](screenshots/Query3.png)  
 **Interpretation:** Measures month-to-month growth or decline.  
 
 ---
 
 ### 4. Customer Quartiles (Spending Segments)  
 ```sql
--- SQL here
+SELECT c.customer_id, c.name,
+       SUM(t.amount) AS total_transactions,
+       NTILE(4) OVER (ORDER BY SUM(t.amount) DESC) AS spending_quartile
+FROM customers c
+JOIN accounts a ON c.customer_id = a.customer_id
+JOIN transactions t ON a.account_id = t.account_id
+GROUP BY c.customer_id, c.name
+ORDER BY spending_quartile;
 ```
-📸 Screenshot: ![Quartiles](screenshots/quartiles.png)  
+📸 Screenshot: ![Quartiles](screenshots/Query4.png)  
 **Interpretation:** Splits customers into quartiles for segmentation.  
 
 ---
 
 ### 5. 3-Month Moving Average  
 ```sql
--- SQL here
+SELECT TO_CHAR(t.transaction_date, 'YYYY-MM') AS month,
+       SUM(t.amount) AS monthly_total,
+       AVG(SUM(t.amount)) OVER (
+           ORDER BY TO_CHAR(t.transaction_date, 'YYYY-MM')
+           ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+       ) AS moving_avg
+FROM transactions t
+GROUP BY TO_CHAR(t.transaction_date, 'YYYY-MM')
+ORDER BY month;
 ```
-📸 Screenshot: ![Moving Average](screenshots/moving_average.png)  
+📸 Screenshot: ![Moving Average](screenshots/Query5.png)  
 **Interpretation:** Smooths data for long-term trend analysis.  
 
 ---
