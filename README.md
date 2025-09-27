@@ -64,7 +64,8 @@ JOIN transactions t ON a.account_id = t.account_id
 WHERE a.account_type = 'Savings'
 GROUP BY c.customer_id, c.name;
 ```
-📸 Screenshot: ![Ranking Results](screenshots/Query1.png)  
+📸 Screenshot: 
+![Ranking Results](screenshots/Query1.png)  
 **Interpretation:** Identifies top deposit customers ranked by total deposits.  
 
 ---
@@ -78,7 +79,8 @@ FROM transactions t
 GROUP BY TO_CHAR(t.transaction_date, 'YYYY-MM')
 ORDER BY month;
 ```
-📸 Screenshot: ![Running Totals](screenshots/Query2.png)  
+📸 Screenshot:
+![Running Totals](screenshots/Query2.png)  
 **Interpretation:** Shows monthly totals with cumulative running balance.  
 
 ---
