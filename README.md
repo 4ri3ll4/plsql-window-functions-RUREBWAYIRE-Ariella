@@ -1,7 +1,8 @@
 # 📊 PL/SQL Window Functions – Banking Case Study  
 
 ### Course: Database Development with PL/SQL (INSY 8311)  
-**Student:** Ariella Ampoze  
+**Student:** RUREBWAYIRE AMPOZE Ariella
+**Student_ID:** 27640
 **Instructor:** Eric Maniraguha  
 **Assignment Date:** September 19, 2025  
 **Deadline:** September 29, 2025  
