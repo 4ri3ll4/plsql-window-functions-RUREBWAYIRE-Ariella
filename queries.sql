@@ -38,12 +38,15 @@ GROUP BY c.customer_id, c.name
 ORDER BY spending_quartile;
 
 
-SELECT TO_CHAR(t.transaction_date, 'YYYY-MM') AS month,
+ELECT TO_CHAR(t.transaction_date, 'YYYY-MM') AS month,
        SUM(t.amount) AS monthly_total,
-       AVG(SUM(t.amount)) OVER (
-           ORDER BY TO_CHAR(t.transaction_date, 'YYYY-MM')
-           ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
-       ) AS moving_avg
+       ROUND(
+         AVG(SUM(t.amount)) OVER (
+             ORDER BY TO_CHAR(t.transaction_date, 'YYYY-MM')
+             ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+        ), 2
+      ) AS moving_avg
 FROM transactions t
 GROUP BY TO_CHAR(t.transaction_date, 'YYYY-MM')
 ORDER BY month;
+
