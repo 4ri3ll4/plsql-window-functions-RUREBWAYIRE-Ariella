@@ -40,9 +40,21 @@ The solution must achieve the following goals using PL/SQL window functions:
 ## 🔹 Step 3: Database Schema  
 
 ### Tables  
-- **customers**: customer_id (PK), name, region  
-- **accounts**: account_id (PK), customer_id (FK), account_type  
-- **transactions**: transaction_id (PK), account_id (FK), transaction_date, amount  
+- **customers**: customer_id (PK), name, region
+  
+  📸 Screenshot:
+
+  ![Customers Table](screenshots/customers_table.png)
+- **accounts**: account_id (PK), customer_id (FK), account_type
+  
+  📸 Screenshot:
+
+  ![Accounts Table](screenshots/accounts_table.png) 
+- **transactions**: transaction_id (PK), account_id (FK), transaction_date, amount
+    
+  📸 Screenshot:
+
+  ![Transactions Table](screenshots/transactions_table.png)
 
 ### ER Diagram  
 📌
