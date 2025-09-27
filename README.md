@@ -45,7 +45,9 @@ The solution must achieve the following goals using PL/SQL window functions:
 - **transactions**: transaction_id (PK), account_id (FK), transaction_date, amount  
 
 ### ER Diagram  
-📌 ![ER Diagram](screenshots/ER_Diagram.png)  
+📌
+
+![ER Diagram](screenshots/ER_Diagram.png)  
 
 ---
 
@@ -65,6 +67,7 @@ WHERE a.account_type = 'Savings'
 GROUP BY c.customer_id, c.name;
 ```
 📸 Screenshot: 
+
 ![Ranking Results](screenshots/Query1.png)  
 **Interpretation:** Identifies top deposit customers ranked by total deposits.  
 
@@ -80,6 +83,7 @@ GROUP BY TO_CHAR(t.transaction_date, 'YYYY-MM')
 ORDER BY month;
 ```
 📸 Screenshot:
+
 ![Running Totals](screenshots/Query2.png)  
 **Interpretation:** Shows monthly totals with cumulative running balance.  
 
@@ -98,7 +102,9 @@ FROM transactions t
 GROUP BY TO_CHAR(t.transaction_date, 'YYYY-MM')
 ORDER BY month;
 ```
-📸 Screenshot: ![Growth Results](screenshots/Query3.png)  
+📸 Screenshot:
+
+![Growth Results](screenshots/Query3.png)  
 **Interpretation:** Measures month-to-month growth or decline.  
 
 ---
